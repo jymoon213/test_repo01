@@ -9,13 +9,15 @@ pipeline {
                     docker.withRegistry('https://myregistry.images.io:30000') {
 
                         /* Build the container image */
-                        def dockerImage = docker.build("my-image:${env.BUILD_ID}")
+                        def dockerImage = docker.build("main:${env.BUILD_ID}")
 
                         /* Push the container to the custom Registry */
                         dockerImage.push()
 
                     }
-               }
+                    /* Remove docker image*/
+                    sh "docker rmi -f main:${env.BUILD_ID}"
+                }
             }
         }
     }
